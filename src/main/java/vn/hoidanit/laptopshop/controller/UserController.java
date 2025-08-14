@@ -33,6 +33,14 @@ public class UserController {
 
     @RequestMapping("/admin/user")
 
+    public String getUser(Model model) {
+        model.addAttribute("newUser", new User());
+        return "admin/user/table-user";
+
+    }
+
+    @RequestMapping("/admin/user/create")
+
     public String getCreateUser(Model model) {
         model.addAttribute("newUser", new User());
         return "admin/user/create";
