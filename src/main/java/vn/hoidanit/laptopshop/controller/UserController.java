@@ -1,5 +1,7 @@
 package vn.hoidanit.laptopshop.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -12,7 +14,7 @@ import vn.hoidanit.laptopshop.service.UserService;
 @Controller
 public class UserController {
     // // DI: Dependency Injection
-    private UserService userService;
+    private final UserService userService;
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -21,9 +23,10 @@ public class UserController {
     @RequestMapping("/")
 
     public String getHomePage(Model model) {
-        String test = this.userService.handleHello();
+        List<User> arrayUser = this.userService.getAllUserByEmail("nguyendeptrai123@gmail.com");
+        System.out.println(arrayUser);
         String controlService = "Hello from Controller";
-        model.addAttribute("test", test);
+        model.addAttribute("test", "test");
         model.addAttribute("controller", controlService);
         return "hello";
     }
@@ -40,6 +43,7 @@ public class UserController {
 
     public String createUserPage(Model model, @ModelAttribute("newUser") User hoidanit) {
         System.out.println(hoidanit);
+        this.userService.handleSaveUser(hoidanit);
         String test1 = "Hello Create ADmin";
         return "hello";
 
