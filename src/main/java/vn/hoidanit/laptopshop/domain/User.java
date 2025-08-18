@@ -1,34 +1,49 @@
 package vn.hoidanit.laptopshop.domain;
 
+import java.util.List;
+
 // javax
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "users")
 
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String email;
     private String password;
     private String fullName;
     private String address;
     private String phone;
 
-    public User() {
+    private String avatar;
 
-    }
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+    // User many to one role
 
-    public User(long id, String email, String password, String fullName, String address, String phone) {
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    public User(long id, String email, String password, String fullName, String address, String phone, String avatar) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.fullName = fullName;
         this.address = address;
         this.phone = phone;
+        this.avatar = avatar;
     }
 
     public long getId() {
@@ -79,16 +94,17 @@ public class User {
         this.phone = phone;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", email='" + email + '\'' +
-                ", password=" + password +
-                ", fullName='" + fullName + '\'' +
-                ", address='" + address + '\'' +
-                ", phone=" + phone +
-                '}';
+    public String getAvatar() {
+        return avatar;
     }
 
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", email=" + email + ", password=" + password + ", fullName=" + fullName
+                + ", address=" + address + ", phone=" + phone + ", avatar=" + avatar + "]";
+    }
 }
