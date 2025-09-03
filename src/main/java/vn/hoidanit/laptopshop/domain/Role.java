@@ -22,6 +22,9 @@ public class Role {
 
     // role - one -> many users
 
+    public Role() {
+    }
+
     @OneToMany(mappedBy = "role")
     private List<User> users;
 

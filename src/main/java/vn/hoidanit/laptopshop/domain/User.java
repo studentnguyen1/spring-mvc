@@ -36,14 +36,20 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    public User(long id, String email, String password, String fullName, String address, String phone, String avatar) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.fullName = fullName;
-        this.address = address;
-        this.phone = phone;
-        this.avatar = avatar;
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public long getId() {
