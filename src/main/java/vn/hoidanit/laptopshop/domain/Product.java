@@ -44,6 +44,9 @@ public class Product {
         this.target = target;
     }
 
+    public Product() {
+    }
+
     public long getId() {
         return id;
     }
