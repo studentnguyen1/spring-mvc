@@ -8,6 +8,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 
 @Entity
 @Table(name = "products")
@@ -17,12 +19,23 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotEmpty(message = "Ten san pham khong duoc de trong")
     private String name;
+
+    @Min(value = 0, message = "Price phai lon hon 0")
     private double price;
+
     private String image;
+
+    @NotEmpty(message = "detailDesc khong duoc de trong")
     private String detailDesc;
+
+    @NotEmpty(message = "shortDesc khong duoc de trong")
     private String shortDesc;
+
+    @Min(value = 1, message = "So luong phai lon hon hoac bang 1")
     private long quantity;
+
     private long sold;
     private String factory;
     private String target;
