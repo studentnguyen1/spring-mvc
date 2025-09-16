@@ -2,12 +2,14 @@ package vn.hoidanit.laptopshop.domain;
 
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 
@@ -22,12 +24,13 @@ public class Product {
     @NotEmpty(message = "Ten san pham khong duoc de trong")
     private String name;
 
-    @Min(value = 0, message = "Price phai lon hon 0")
+    @DecimalMin(value = "0", inclusive = false, message = "Price phai lon hon 0")
     private double price;
 
     private String image;
 
     @NotEmpty(message = "detailDesc khong duoc de trong")
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String detailDesc;
 
     @NotEmpty(message = "shortDesc khong duoc de trong")
