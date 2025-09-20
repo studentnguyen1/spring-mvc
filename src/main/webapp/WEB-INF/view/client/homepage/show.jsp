@@ -72,10 +72,6 @@
                 <!-- Modal Search End -->
 
                 <jsp:include page="../layout/banner.jsp" />
-
-                <jsp:include page="../layout/feature.jsp" />
-
-
                 <!-- Fruits Shop Start-->
                 <div class="container-fluid fruite py-5">
                     <div class="container py-5">
@@ -105,23 +101,22 @@
                                                         <div class="rounded position-relative fruite-item">
                                                             <div class="fruite-img">
                                                                 <img src="/images/product/${product.image}"
-                                                                    class="img-fluid w-100 rounded-top" alt="">
+                                                                    class="img-fluid w-100 rounded-top" alt
+                                                                    style="height: 214.2px;">
                                                             </div>
                                                             <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
                                                                 style="top: 10px; left: 10px;">Laptop</div>
                                                             <div
                                                                 class="p-4 border border-secondary border-top-0 rounded-bottom">
                                                                 <h4 style="font-size: 15px">
-                                                                    <a href="/product/${product.id}">
-                                                                        ${product.name}
-                                                                    </a>
+                                                                    <a href="/product/${product.id}">${product.name}</a>
                                                                 </h4>
                                                                 <p style="font-size: 13px">${product.shortDesc}</p>
                                                                 <div class="d-flex flex-lg-wrap">
                                                                     <p style="font-size: 15px; text-align: center; width: 100%;"
                                                                         class="text-dark fw-bold mb-3">
                                                                         <fmt:formatNumber type="number"
-                                                                            value="${product.price}" />
+                                                                            value="${product.price}" /> vnd
                                                                     </p>
                                                                     <a href="#"
                                                                         class="mx-auto border border-secondary rounded-pill px-3 text-primary"><i
@@ -141,6 +136,11 @@
                     </div>
                 </div>
                 <!-- Fruits Shop End-->
+
+                <jsp:include page="../layout/feature.jsp" />
+
+
+
 
 
 
