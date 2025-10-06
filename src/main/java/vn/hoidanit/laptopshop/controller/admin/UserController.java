@@ -125,7 +125,7 @@ public class UserController {
         // Validate
 
         if (newUserbindingResult.hasErrors()) {
-            return "/admin/user/create";
+            return "admin/user/create";
         }
 
         String avatar = this.uploadService.handleSaveUploadFile(file, "avatar");
