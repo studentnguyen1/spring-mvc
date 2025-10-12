@@ -1,5 +1,6 @@
 package vn.hoidanit.laptopshop.controller.client;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -15,14 +16,17 @@ import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.service.ProductService;
+import vn.hoidanit.laptopshop.service.UserService;
 
 @Controller
 public class ItemController {
 
     private final ProductService productService;
+    private final UserService userService;
 
-    public ItemController(ProductService productService) {
+    public ItemController(ProductService productService, UserService userService) {
         this.productService = productService;
+        this.userService = userService;
     }
 
     @GetMapping("/product/{id}")
@@ -52,7 +56,7 @@ public class ItemController {
         currentUser.setId(id);
 
         Cart cart = this.productService.fetchByUser(currentUser);
-        List<CartDetail> cartDetails = cart.getCartDetails();
+        List<CartDetail> cartDetails = cart == null ? new ArrayList<CartDetail>() : cart.getCartDetails();
         model.addAttribute("CartDetails", cartDetails);
 
         double totalPrice = 0;
@@ -63,6 +67,15 @@ public class ItemController {
         model.addAttribute("totalPrice", totalPrice);
 
         return "client/cart/show";
+    }
+
+    @PostMapping("/delete-cart-product/{id}")
+    public String deleteCartDetail(@PathVariable long id, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        long cartDetailId = id;
+        this.productService.handleRemoveCartDetail(cartDetailId, session);
+
+        return "redirect:/cart";
     }
 
 }
