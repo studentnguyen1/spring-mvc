@@ -55,7 +55,7 @@
                                     <nav aria-label="breadcrumb">
                                         <ol class="breadcrumb" style="margin-bottom: 0px">
                                             <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                            <li class="breadcrumb-item active" aria-current="page">Chi tiết giỏ hàng
+                                            <li class="breadcrumb-item active" aria-current="page">Thông tin thanh toán
                                             </li>
                                         </ol>
                                     </nav>
@@ -72,7 +72,7 @@
                                                         <th scope="col">Giá cả</th>
                                                         <th scope="col">Số lượng</th>
                                                         <th scope="col">Thành tiền</th>
-                                                        <th scope="col">Xử lý</th>
+
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -103,25 +103,12 @@
                                                             <td>
                                                                 <div class="input-group quantity mt-4"
                                                                     style="width: 100px;">
-                                                                    <div class="input-group-btn">
-                                                                        <button
-                                                                            class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                                                            <i class="fa fa-minus"></i>
-                                                                        </button>
-                                                                    </div>
                                                                     <input type="text"
                                                                         class="form-control form-control-sm text-center border-0"
                                                                         value="${cartDetail.quantity}"
                                                                         data-cart-detail-id="${cartDetail.id}"
                                                                         data-cart-detail-price="${cartDetail.price}"
                                                                         data-cart-detail-index="${status.index}">
-
-                                                                    <div class="input-group-btn">
-                                                                        <button
-                                                                            class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                                            <i class="fa fa-plus"></i>
-                                                                        </button>
-                                                                    </div>
                                                                 </div>
                                                             </td>
                                                             <td>
@@ -132,133 +119,98 @@
                                                                         type="number" /> vnd
                                                                 </p>
                                                             </td>
-                                                            <td>
-                                                                <form method="post"
-                                                                    action="/delete-cart-product/${cartDetail.id}">
-                                                                    <input type="hidden" name="${_csrf.parameterName}"
-                                                                        value="${_csrf.token}" />
-                                                                    <button
-                                                                        class="btn btn-md rounded-circle bg-light border mt-4">
-                                                                        <i class="fa fa-times text-danger"></i>
-                                                                    </button>
-                                                                </form>
-                                                            </td>
                                                         </tr>
                                                     </c:forEach>
-                                                    <c:if test="${empty cartDetails}">
-                                                        <tr>
-                                                            <th scope="row">
-                                                                <div class="mb-0 mt-4">
-                                                                    Chưa có dữ liệu
-                                                                </div>
-                                                            </th>
-                                                            <td>
-                                                                <p class="mb-0 mt-4">
-                                                                    Chưa có dữ liệu
-                                                                </p>
-                                                            </td>
-                                                            <td>
-                                                                <p class="mb-0 mt-4">
-                                                                    Chưa có dữ liệu
-                                                                </p>
-                                                            </td>
-                                                            <td>
-                                                                <div class="input-group quantity mt-4"
-                                                                    style="width: 100px;">
-                                                                    Chưa có dữ liệu
-                                                                </div>
-                                                            </td>
-                                                            <td>
-                                                                <p class="mb-0 mt-4">
-                                                                    Chưa có dữ liệu
-                                                                </p>
-                                                            </td>
-                                                            <td>
-                                                                <button
-                                                                    class="btn btn-md rounded-circle bg-light border mt-4">
-                                                                    <i class="fa fa-times text-danger"></i>
-                                                                </button>
-                                                            </td>
-                                                        </tr>
-                                                    </c:if>
 
                                                 </tbody>
                                             </table>
                                         </div>
-                                        <div class="row g-4 justify-content-start">
+                                        <div class="row g-4 justify-content-end">
                                             <c:if test="${not empty cartDetails}">
+                                                <div class="col-8">
+                                                    <form:form action="/place-order" method="post" id="orderForm"
+                                                        modelAttribute="cart">
+                                                        <input type="hidden" name="${_csrf.parameterName}"
+                                                            value="${_csrf.token}" />
+                                                        <div class="p-4">
+                                                            <h5>Thông tin người nhận</h5>
+                                                            <div class="row">
+                                                                <div class="col-12 form-group mb-3">
+                                                                    <label>Tên người nhận: </label>
+                                                                    <input class="form-control" name="receiverName"
+                                                                        required="true" />
+                                                                </div>
+                                                                <div class="col-12 form-group mb-3">
+                                                                    <label>Địa chỉ người nhận: </label>
+                                                                    <input class="form-control" name="receiverAddress"
+                                                                        required="true" />
+                                                                </div>
+                                                                <div class="col-12 form-group mb-3">
+                                                                    <label>Số điện thoại người nhận: </label>
+                                                                    <input class="form-control" name="receiverPhone"
+                                                                        required="true" />
+                                                                </div>
+                                                                <a href="/cart" class="btn btn-success mt-3">Quay lại
+                                                                    giỏ hàng</a>
+
+
+                                                            </div>
+                                                        </div>
+                                                    </form:form>
+                                                </div>
                                                 <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
                                                     <div class="bg-light rounded">
                                                         <div class="p-4">
                                                             <h1 class="display-6 mb-4">Thông Tin <span
-                                                                    class="fw-normal">Đơn
-                                                                    Hàng</span>
+                                                                    class="fw-normal">Thanh Toán</span>
                                                             </h1>
-                                                            <div class="d-flex justify-content-between mb-4">
-                                                                <h5 class="mb-0 me-4">Tạm tính:</h5>
-                                                                <p class="mb-0" data-cart-total-price="${totalPrice}">
-                                                                    <fmt:formatNumber value="${totalPrice}"
-                                                                        type="number" />
-                                                                    vnd
-                                                                </p>
-                                                            </div>
                                                             <div class="d-flex justify-content-between">
                                                                 <h5 class="mb-0 me-4">Phí vận chuyển: </h5>
                                                                 <div class="">
                                                                     <p class="mb-0">0 vnd</p>
                                                                 </div>
                                                             </div>
+                                                            <div class="d-flex justify-content-between">
+                                                                <h5 class="mb-0 me-4">Hình thức:</h5>
+                                                                <p class="">
+                                                                    Thanh toán khi nhận hàng (COD)
+                                                                </p>
+                                                            </div>
 
                                                         </div>
                                                         <div
                                                             class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
                                                             <h5 class="mb-0 ps-4 me-4"
-                                                                data-cart-total-price="${totalPrice}">Tổng số tiền</h5>
+                                                                data-cart-total-price="${totalPrice}">Tổng số
+                                                                tiền</h5>
                                                             <p class="mb-0 pe-4" data-cart-total-price="${totalPrice}">
                                                                 <fmt:formatNumber value="${totalPrice}" type="number" />
                                                                 vnd
                                                             </p>
                                                         </div>
-                                                        <form:form action="/confirm-checkout" method="post"
-                                                            modelAttribute="cart">
-                                                            <input type="hidden" name="${_csrf.parameterName}"
-                                                                value="${_csrf.token}" />
-                                                            <div style="display: none">
-                                                                <c:forEach var="cartDetail" items="${cart.cartDetails}"
-                                                                    varStatus="status">
-                                                                    <div class="mb-3">
-                                                                        <div class="form-group">
-                                                                            <label>Id:</label>
-                                                                            <form:input class="form-control" type="text"
-                                                                                value="${cartDetail.id}"
-                                                                                path="cartDetails[${status.index}].id"
-                                                                                id="cartDetails${status.index}.id" />
-                                                                        </div>
-                                                                        <div class="form-group">
-                                                                            <label>Quantity:</label>
-                                                                            <form:input class="form-control" type="text"
-                                                                                value="${cartDetail.quantity}"
-                                                                                path="cartDetails[${status.index}].quantity"
-                                                                                id="cartDetails${status.index}.quantity" />
+                                                        <button
+                                                            class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
+                                                            form="orderForm" type="submit">Xác nhận đặt hàng</button>
 
-                                                                        </div>
-                                                                    </div>
-                                                                </c:forEach>
-                                                            </div>
-                                                            <button
-                                                                class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                                                                type="submit">Xác nhận đặt hàng</button>
-                                                        </form:form>
+
 
                                                     </div>
                                                 </div>
-                                            </c:if>
+
+
                                         </div>
+
+
+
                                     </div>
+
+                                    </c:if>
                                 </div>
-                                <!-- Cart Page End -->
                             </div>
                         </div>
+                        <!-- Cart Page End -->
+                    </div>
+                    </div>
                     </div>
                     <!-- Single Product End -->
 
