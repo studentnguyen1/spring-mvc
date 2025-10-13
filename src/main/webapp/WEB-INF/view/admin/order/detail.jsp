@@ -28,42 +28,50 @@
                                     <ol class="breadcrumb mb-4">
                                         <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
                                         <li class="breadcrumb-item active">Order</li>
+                                        <li class="breadcrumb-item active">Detail</li>
+
 
                                     </ol>
-                                    <div class="mt-5">
+                                    <div class="container mt-5">
                                         <div class="row">
                                             <div class="col-12 mx-auto">
                                                 <div class="d-flex justify-content-between">
-                                                    <h3>Table Orders</h3>
+                                                    <h3>Order detail with id = ${id} </h3>
                                                 </div>
                                                 <hr />
                                                 <table class="table table-bordered table-hover">
                                                     <thead>
                                                         <tr>
-                                                            <th>ID</th>
-                                                            <th>Total Price</th>
-                                                            <th>User</th>
-                                                            <th>Status</th>
-                                                            <th>Action</th>
+                                                            <th>Sản phẩm</th>
+                                                            <th>Tên</th>
+                                                            <th>Giá cả</th>
+                                                            <th>Số lượng</th>
+                                                            <th>Thành tiền</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        <c:forEach var="order" items="${orders}">
+                                                        <c:forEach var="orderDetail" items="${orderDetails}">
                                                             <tr>
-                                                                <th>${order.id}</th>
+                                                                <th scope="row">
+                                                                    <div class="d-flex align-items-center">
+                                                                        <img src="/images/product/${orderDetail.product.image}"
+                                                                            class="img-fluid me-5 rounded-circle"
+                                                                            style="width: 80px; height: 80px;" alt="">
+                                                                    </div>
+                                                                </th>
                                                                 <td>
-                                                                    <fmt:formatNumber value="${order.totalPrice}"
+                                                                    <a
+                                                                        href="/product/${orderDetail.product.id}">${orderDetail.product.name}</a>
+                                                                </td>
+                                                                <td>
+                                                                    <fmt:formatNumber value="${orderDetail.price}"
                                                                         type="number" /> vnd
                                                                 </td>
-                                                                <td>${order.user.fullName}</td>
-                                                                <td>${order.status}</td>
+                                                                <td>${orderDetail.quantity}</td>
                                                                 <td>
-                                                                    <a href="/admin/order/${order.id}"
-                                                                        class="btn btn-success">View</a>
-                                                                    <a href="/admin/order/update/${order.id}"
-                                                                        class="btn btn-warning mx-2">Update</a>
-                                                                    <a href="/admin/order/delete/${order.id}"
-                                                                        class="btn btn-danger">Delete</a>
+                                                                    <fmt:formatNumber
+                                                                        value="${orderDetail.price * orderDetail.quantity}"
+                                                                        type="number" /> vnd
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
@@ -72,11 +80,15 @@
 
                                                     </tbody>
                                                 </table>
+                                                <a href="/admin/order" class="btn btn-success mt-3">Back</a>
+
+
 
 
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </main>
                             <jsp:include page="../layout/footer.jsp" />

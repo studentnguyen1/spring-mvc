@@ -141,21 +141,27 @@ public class ProductService {
 
     public void handlePlaceOrder(User user, HttpSession session, String receiverName, String receiverAddress,
             String receiverPhone) {
-        // create order
-        Order order = new Order(0, 0, receiverName, receiverAddress, receiverPhone, receiverPhone, user, null);
-        order.setUser(user);
-        order.setReceiverName(receiverName);
-        order.setReceiverAddress(receiverAddress);
-        order.setReceiverPhone(receiverPhone);
-
-        order = this.orderRepository.save(order);
-
-        // create orderdetail
 
         // step 1: get cart by user
         Cart cart = this.cartRepository.findByUser(user);
         if (cart != null) {
             List<CartDetail> cartDetails = cart.getCartDetails();
+            // create order
+            Order order = new Order(0, 0, receiverName, receiverAddress, receiverPhone, receiverPhone, user, null);
+            order.setUser(user);
+            order.setReceiverName(receiverName);
+            order.setReceiverAddress(receiverAddress);
+            order.setReceiverPhone(receiverPhone);
+            order.setStatus("PENDING");
+
+            double sum = 0;
+            for (CartDetail cd : cartDetails) {
+                sum += cd.getQuantity() * cd.getPrice();
+            }
+            order.setTotalPrice(sum);
+
+            order = this.orderRepository.save(order);
+            // create orderdetail
             if (cartDetails != null) {
                 for (CartDetail cd : cartDetails) {
                     OrderDetail orderDetail = new OrderDetail();
@@ -163,6 +169,7 @@ public class ProductService {
                     orderDetail.setProduct(cd.getProduct());
                     orderDetail.setPrice(cd.getPrice());
                     orderDetail.setQuantity(cd.getQuantity());
+
                     this.orderDetailRepository.save(orderDetail);
 
                 }
