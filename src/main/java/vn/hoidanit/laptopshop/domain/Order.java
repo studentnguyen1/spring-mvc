@@ -19,6 +19,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    public Order(long id, double totalPrice, String receiverName, String receiverAddress, String receiverPhone,
+            String status, User user, List<OrderDetail> orderDetails) {
+        this.id = id;
+        this.totalPrice = totalPrice;
+        this.receiverName = receiverName;
+        this.receiverAddress = receiverAddress;
+        this.receiverPhone = receiverPhone;
+        this.status = status;
+        this.user = user;
+        this.orderDetails = orderDetails;
+    }
+
     private double totalPrice;
 
     private String receiverName;
@@ -64,6 +76,22 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<OrderDetail> getOrderDetails() {
+        return orderDetails;
+    }
+
+    public void setOrderDetails(List<OrderDetail> orderDetails) {
+        this.orderDetails = orderDetails;
+    }
 
     @OneToMany(mappedBy = "order")
     List<OrderDetail> orderDetails;
