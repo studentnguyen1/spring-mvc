@@ -129,6 +129,21 @@
         })
     });
 
+    //add active class to header
+    const navElement = $("#navbarCollapse");
+    const currentUrl = window.location.pathname;
+    navElement.find('a.nav-link').each(function () {
+        const link = $(this); //get current link in loop
+        const href = link.attr('href'); //get href of link
+
+        if (href === currentUrl) {
+            link.addClass('active');
+        } else {
+            link.removeClass('active');
+        }
+    })
+
+
 
 
     // // Product Quantity
