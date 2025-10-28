@@ -1,7 +1,6 @@
 package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -151,10 +150,10 @@ public class ItemController {
     @GetMapping("/products")
     public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional,
             @RequestParam("name") Optional<String> nameOptional,
-            @RequestParam("min-price") Optional<String> minPriceOptional,
-            @RequestParam("max-price") Optional<String> maxPriceOptional,
+            @RequestParam("target") Optional<String> targetOptional,
             @RequestParam("factory") Optional<String> factoryOptional,
-            @RequestParam("price") Optional<String> priceOptional) {
+            @RequestParam("price") Optional<String> priceOptional,
+            @RequestParam("sort") Optional<String> sortOptional) {
         int page = 1;
         try {
             if (pageOptional.isPresent()) {
@@ -167,6 +166,8 @@ public class ItemController {
         }
         Pageable pageable = PageRequest.of(page - 1, 60);
         String name = nameOptional.isPresent() ? nameOptional.get() : "";
+        Page<Product> prs = this.productService.getAllProductsWithSpec(pageable, name);
+
         // case 1:
         // double min_price = minPriceOptional.isPresent() ?
         // Double.parseDouble(minPriceOptional.get()) : 0;
@@ -195,8 +196,7 @@ public class ItemController {
         // price);
 
         // case 6:
-        List<String> price = Arrays.asList(priceOptional.get().split(","));
-        Page<Product> prs = this.productService.getAllProductsWithSpec(pageable, price);
+        // List<String> price = Arrays.asList(priceOptional.get().split(","));
 
         List<Product> products = prs.getContent();
         model.addAttribute("products", products);
