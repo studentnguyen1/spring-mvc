@@ -2,7 +2,6 @@ package vn.hoidanit.laptopshop.controller.client;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,6 +20,7 @@ import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
 import vn.hoidanit.laptopshop.domain.User;
+import vn.hoidanit.laptopshop.domain.dto.ProductCriteriaDTO;
 import vn.hoidanit.laptopshop.service.ProductService;
 import vn.hoidanit.laptopshop.service.UserService;
 
@@ -148,16 +148,11 @@ public class ItemController {
     }
 
     @GetMapping("/products")
-    public String getProductPage(Model model, @RequestParam("page") Optional<String> pageOptional,
-            @RequestParam("name") Optional<String> nameOptional,
-            @RequestParam("target") Optional<String> targetOptional,
-            @RequestParam("factory") Optional<String> factoryOptional,
-            @RequestParam("price") Optional<String> priceOptional,
-            @RequestParam("sort") Optional<String> sortOptional) {
+    public String getProductPage(Model model, ProductCriteriaDTO productCriteriaDTO) {
         int page = 1;
         try {
-            if (pageOptional.isPresent()) {
-                page = Integer.parseInt(pageOptional.get());
+            if (productCriteriaDTO.getPage().isPresent()) {
+                page = Integer.parseInt(productCriteriaDTO.getPage().get());
             } else {
                 // page = 1';
             }
@@ -165,8 +160,7 @@ public class ItemController {
             // handleException
         }
         Pageable pageable = PageRequest.of(page - 1, 60);
-        String name = nameOptional.isPresent() ? nameOptional.get() : "";
-        Page<Product> prs = this.productService.getAllProductsWithSpec(pageable, name);
+        Page<Product> prs = this.productService.getAllProduct(pageable);
 
         // case 1:
         // double min_price = minPriceOptional.isPresent() ?
