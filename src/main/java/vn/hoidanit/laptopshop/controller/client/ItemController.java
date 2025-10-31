@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import jakarta.servlet.http.HttpSession;
 import vn.hoidanit.laptopshop.domain.Cart;
 import vn.hoidanit.laptopshop.domain.CartDetail;
 import vn.hoidanit.laptopshop.domain.Product;
+import vn.hoidanit.laptopshop.domain.Product_;
 import vn.hoidanit.laptopshop.domain.User;
 import vn.hoidanit.laptopshop.domain.dto.ProductCriteriaDTO;
 import vn.hoidanit.laptopshop.service.ProductService;
@@ -148,7 +150,7 @@ public class ItemController {
     }
 
     @GetMapping("/products")
-    public String getProductPage(Model model, ProductCriteriaDTO productCriteriaDTO) {
+    public String getProductPage(Model model, ProductCriteriaDTO productCriteriaDTO, HttpServletRequest request) {
         int page = 1;
         try {
             if (productCriteriaDTO.getPage().isPresent()) {
@@ -159,40 +161,28 @@ public class ItemController {
         } catch (Exception e) {
             // handleException
         }
-        Pageable pageable = PageRequest.of(page - 1, 60);
-        Page<Product> prs = this.productService.getAllProduct(pageable);
+        Pageable pageable = PageRequest.of(page - 1, 10);
+        // check sort price
+        if (productCriteriaDTO.getSort() != null && productCriteriaDTO.getSort().isPresent()) {
+            String sort = productCriteriaDTO.getSort().get();
+            if (sort.equals("gia-tang-dan")) {
+                pageable = PageRequest.of(page - 1, 10, Sort.by(Product_.PRICE).ascending());
 
-        // case 1:
-        // double min_price = minPriceOptional.isPresent() ?
-        // Double.parseDouble(minPriceOptional.get()) : 0;
-        // Page<Product> prs = this.productService.getAllProductsWithSpec(pageable,
-        // min_price);
+            } else if (sort.equals("gia-giam-dan")) {
+                pageable = PageRequest.of(page - 1, 10, Sort.by(Product_.PRICE).descending());
 
-        // case 2:
-        // double max_price = maxPriceOptional.isPresent() ?
-        // Double.parseDouble(maxPriceOptional.get()) : 0;
-        // Page<Product> prs = this.productService.getAllProductsWithSpec(pageable,
-        // max_price);
+            }
 
-        // case 3:
-        // String factory = factoryOptional.isPresent() ? factoryOptional.get() : "";
-        // Page<Product> prs = this.productService.getAllProductsWithSpec(pageable,
-        // factory);
-
-        // case 4:
-        // List<String> factories = Arrays.asList(factoryOptional.get().split(","));
-        // Page<Product> prs = this.productService.getAllProductsWithSpec(pageable,
-        // factories);
-
-        // case 5:
-        // String price = priceOptional.isPresent() ? priceOptional.get() : " ";
-        // Page<Product> prs = this.productService.getAllProductsWithSpec(pageable,
-        // price);
-
-        // case 6:
-        // List<String> price = Arrays.asList(priceOptional.get().split(","));
+        }
+        Page<Product> prs = this.productService.getAllProductsWithSpec(pageable, productCriteriaDTO);
 
         List<Product> products = prs.getContent();
+        String qs = request.getQueryString();
+        if (qs != null && qs.isBlank()) {
+            // remove page
+            qs = qs.replace("page=" + page, "");
+        }
+
         model.addAttribute("products", products);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", prs.getTotalPages());

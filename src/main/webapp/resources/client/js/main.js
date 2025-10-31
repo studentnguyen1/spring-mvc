@@ -273,6 +273,12 @@
         searchParams.set('page', '1');
         searchParams.set('sort', sortValue);
 
+        // reset
+        searchParams.delete('factory');
+        searchParams.delete('target');
+        searchParams.delete('price');
+
+
         if (factoryArr.length > 0) {
             searchParams.set('factory', factoryArr.join(','));
         }
@@ -308,7 +314,10 @@
             $(`#priceFilter .form-check-input[value='${value}']`).prop('checked', true);
         });
     }
-
+    if (params.has('sort')) {
+        const sortParam = params.get('sort');
+        $(`#sortFilter .form-check-input[value='${sortParam}']`).prop('checked', true);
+    }
 
 
 })(jQuery);
